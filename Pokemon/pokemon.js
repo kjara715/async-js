@@ -73,4 +73,54 @@ async function threeRandomPokemonSpecies() {
 
 // Example: “ducklett: They are better at swimming than flying, and they happily eat their favorite food, peat moss, as they dive underwater.”
 
-// BONUS Instead of relying on console.log, let’s create a UI for these random pokemon. Build an HTML page that lets you click on a button to generate data from three randomly chosen pokemon. Include the name of the pokemon, an image of the pokemon, and the description of its species which you found in 3.
+// BONUS Instead of relying on console.log, let’s create a UI for these random pokemon. Build an HTML page that lets you click on a button to generate data from three randomly 
+//chosen pokemon. 
+//Include the name of the pokemon, an image of the pokemon, and the description of its species which you found in 3.
+
+
+    $button=$("button")
+    $div=$('div')
+    $button.on("click", async function threeRandomPokemonSpeciesCard(){
+        let allPokemon = await getAllPokemon(); //returns all 1,118 options in an array
+        let randomIndeces=[];
+        for(let i=0; i<3; i++) {
+            randomIndeces[i]=Math.floor(Math.random()*allPokemon.length)
+        }
+    
+        let pokeInfo=[];
+        let speciesInfo=[];
+
+        randomIndeces.forEach(async function(index) {
+        
+        pokeInfo[index] =await $.getJSON(allPokemon[index].url);
+        let pokeName= pokeInfo[index].name;
+        
+        $div.append(`<h1 id="${pokeName}">${pokeName}</h1>`)
+        
+        speciesInfo[index]=await $.getJSON(pokeInfo[index].species.url)
+        console.log(pokeName)
+
+        for(let flavor of speciesInfo[index].flavor_text_entries){
+            if(flavor.language.name === "en"){
+                $div.append("<p>").append(flavor.flavor_text)
+            }
+            
+            // console.log(flavor.flavor_text)
+        }
+        
+        
+        })
+        console.log(speciesInfo);
+
+        }
+
+
+
+        
+)
+
+
+   
+    
+
+ 
