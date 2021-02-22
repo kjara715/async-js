@@ -21,7 +21,7 @@ async function threeRandomPokemon() {
     for(let i=0; i<3; i++) {
         randomIndeces[i]=Math.floor(Math.random()*allPokemon.length)
     }
-    console.log(randomIndeces)
+    
     let pokeInfo=[]
     randomIndeces.forEach(async function(index) {
         
@@ -36,7 +36,40 @@ async function threeRandomPokemon() {
 }
 
 // Start with your code from 2, but instead of logging the data on each random pokemon, store the name of the pokemon in a variable and then make another
-// request, this time to that pokemon’s species URL (you should see a key of species in the data). Once that request comes back, look in the flavor_text_entries key of the response data for a description of the species written in English. If you find one, console.log the name of the pokemon along with the description you found.
+// request, this time to that pokemon’s species URL (you should see a key of species in the data). Once that request comes back, look in the flavor_text_entries 
+//key of the response data for a description of the species written in English. If you find one, console.log the name of the pokemon along with the description you found.
+
+async function threeRandomPokemonSpecies() {
+    let allPokemon = await getAllPokemon(); //returns all 1,118 options in an array
+    let randomIndeces=[];
+    for(let i=0; i<3; i++) {
+        randomIndeces[i]=Math.floor(Math.random()*allPokemon.length)
+    }
+    
+    let pokeInfo=[];
+    let speciesInfo=[];
+
+    randomIndeces.forEach(async function(index) {
+        
+        pokeInfo[index] =await $.getJSON(allPokemon[index].url);
+        let pokeName= pokeInfo[index].name;
+        
+        
+        speciesInfo[index]=await $.getJSON(pokeInfo[index].species.url)
+        console.log(pokeName)
+        for(let flavor of speciesInfo[index].flavor_text_entries){
+            if(flavor.language.name === "en")
+            console.log(flavor.flavor_text)
+        }
+        
+        
+    })
+
+    // console.log(pokeInfo)
+
+    return speciesInfo
+
+}
 
 // Example: “ducklett: They are better at swimming than flying, and they happily eat their favorite food, peat moss, as they dive underwater.”
 
